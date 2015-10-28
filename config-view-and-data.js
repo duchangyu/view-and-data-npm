@@ -20,21 +20,22 @@ var VERSION = 'v1';
 
 module.exports = {
 
-  //File resumable upload chunk in MB
+  // File resumable upload chunk in MB
   fileResumableChunk: 40,
 
-  //Default bucketKey, used for testing
-  //needs to be unique so you better modify it
+  // Default bucketKey, used for testing
+  // needs to be unique so you better modify it
   defaultBucketKey: 'adn-bucket',
 
-  //Replace with your own API credentials: http://developer.autodesk.com
+  // Replace with your own API credentials:
+  // http://developer.autodesk.com
   credentials: {
 
-    ConsumerKey: process.env.CONSUMERKEY || '<replace with your consumer key>',
-    ConsumerSecret: process.env.CONSUMERSECRET || '<replace with your consumer secret>'
+    ConsumerKey: process.env.CONSUMERKEY,
+    ConsumerSecret: process.env.CONSUMERSECRET
   },
 
-  //API EndPoints
+  // API EndPoints
   endPoints:{
 
     authenticate:     BASE_URL + '/authentication/' + VERSION + '/authenticate',

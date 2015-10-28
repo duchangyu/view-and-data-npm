@@ -1,6 +1,6 @@
 {
   "name": "view-and-data",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "The official npm package for Autodesk View and Data API",
   "main": "view-and-data.js",
   "scripts": {
@@ -14,24 +14,22 @@
     "View-and-Data-API",
     "Autodesk"
   ],
-  "scripts": {
-    "test": "make test"
-  },
   "author": "Philippe Leefsma <philippe.leefsma@autodesk.com> (http://adndevblog.typepad.com/cloud_and_mobile/philippe-leefsma.html)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Developer-Autodesk/view-and-data-npm/issues"
   },
   "homepage": "https://github.com/Developer-Autodesk/view-and-data-npm#readme",
-
   "dependencies": {
-    "async":        "^1.4.2",
-    "es6-promise":  "^3.0.2",
-    "lodash":       "^3.10.1",
-    "request":      "^2.64.0",
-    "util":         "^0.10.3"
+    "async":       "^1.4.2",
+    "es6-promise": "^3.0.2",
+    "lodash":      "^3.10.1",
+    "mkdirp":      "^0.5.1",
+    "request":     "^2.64.0",
+    "util":        "^0.10.3",
+    "adm-zip":     "^0.4.7",
+    "zlibjs":      "^0.2.0"
   },
-
   "devDependencies": {
     "chai": "^3.3.0",
     "mocha": "^2.3.3"

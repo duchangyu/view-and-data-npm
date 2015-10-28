@@ -22,12 +22,13 @@ var should = require('chai').should(),
 //only fill up credentials & bucket fields, other fields are defaulted
 var config = {
 
-  defaultBucketKey: 'adn-bucket', //!Change that name to a unique one,
-                                  // append ConsumerKey to it for example
+  //!Change that name to a unique one,
+  // append ConsumerKey to it for example
+  defaultBucketKey: 'adn-bucket',
 
   credentials: {
-    ConsumerKey: process.env.CONSUMERKEY || '<replace with your consumer key>',
-    ConsumerSecret: process.env.CONSUMERSECRET || '<replace with your consumer secret>'
+    ConsumerKey: process.env.CONSUMERKEY, // use env variables or replace by consumer key
+    ConsumerSecret: process.env.CONSUMERSECRET // use env variables or replace by consumer secret
   }
 }
 
@@ -94,18 +95,20 @@ describe('# View & Data Tests: ', function() {
       done();
     }
 
-    lmv.initialise().then(onInitialized, onError);
+    lmv.initialize().then(onInitialized, onError);
   });
 
   ///////////////////////////////////////////////////////////////////
   //
   //
   ///////////////////////////////////////////////////////////////////
+
+  //default URN
+  var urn = 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YWRuLWJ1Y2tldC90ZXN0LmR3Zg==';
+
   it('Full workflow (bucket/upload/registration/translation/thumbnail)', function(done) {
 
     this.timeout(5 * 60 * 1000); //5 mins timeout
-
-    var urn = '';
 
     var lmv = new Lmv(config);
 
@@ -182,7 +185,54 @@ describe('# View & Data Tests: ', function() {
     }
 
     //start the test
-    lmv.initialise().then(onInitialized, onError);
+    lmv.initialize().then(onInitialized, onError);
+  });
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+  it('Download Model Data', function(done) {
+
+    this.timeout(5 * 60 * 1000); //5 mins timeout
+
+    var lmv = new Lmv(config);
+
+    function onError(error) {
+      done(error);
+    }
+
+    function onInitialized(response) {
+
+      lmv.download(urn, './download').then(
+        onDataDownloaded,
+        onError
+      );
+    }
+
+    function onDataDownloaded(items) {
+
+      console.log('Model downloaded successfully');
+
+      var path3d = items.filter(function(item){
+        return item.type === '3d';
+      });
+
+      console.log('3D Viewable path:');
+      console.log(path3d);
+
+      var path2d = items.filter(function(item){
+        return item.type === '2d';
+      });
+
+      console.log('2D Viewable path:');
+      console.log(path2d);
+
+      done();
+    }
+
+    //start the test
+    lmv.initialize().then(onInitialized, onError);
   });
 
 });
