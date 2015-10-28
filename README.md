@@ -136,6 +136,66 @@ the translation is successful.
       //start the test
       lmv.initialise().then(onInitialized, onError);
 
+## Offline
+
+The package now allows you to download the full viewable package on your disk to run the viewer completely offline.
+Here is an example that illustrates downloading a model packge from its URN:
+
+    var lmv = new Lmv(config);
+
+    function onError(error) {
+      done(error);
+    }
+
+    function onInitialized(response) {
+
+      // downloads package to target directory,
+      // creates recursively if not exists
+      lmv.download(urn, '.test/data/download').then(
+        onDataDownloaded,
+        onError
+      );
+    }
+
+    function onDataDownloaded(items) {
+
+      console.log('Model downloaded successfully');
+
+      var path3d = items.filter(function(item){
+        return item.type === '3d';
+      });
+
+      console.log('3D Viewable path:');
+      console.log(path3d);
+
+      var path2d = items.filter(function(item){
+        return item.type === '2d';
+      });
+
+      console.log('2D Viewable path:');
+      console.log(path2d);
+    }
+
+    //start the test
+    lmv.initialize().then(onInitialized, onError);
+
+To load the model from downloaded package:
+
+    //<div id="viewer-local"></div> in your html
+    var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
+      document.getElementById('viewer-local'));
+    
+    var options = {
+      docid: viewablePath[0].path,
+      env: 'Local'
+    };
+
+    Autodesk.Viewing.Initializer (options, function () {
+
+      viewer.initialize();
+
+      viewer.load(options.docid);
+    });
 
 ## License
 
