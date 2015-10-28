@@ -45,6 +45,7 @@ module.exports = {
     resumableUpload:  BASE_URL + '/oss/' + VERSION + '/buckets/%s/objects/%s/resumable',
     register:         BASE_URL + '/viewingservice/' + VERSION + '/register',
     thumbnail:        BASE_URL + '/viewingservice/' + VERSION + '/thumbnails/%s',
-    viewable:         BASE_URL + '/viewingservice/' + VERSION + '/%s'
+    viewable:         BASE_URL + '/viewingservice/' + VERSION + '/%s',
+    items:            BASE_URL + '/viewingservice/' + VERSION + '/items/%s'
   }
 }

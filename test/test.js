@@ -204,7 +204,7 @@ describe('# View & Data Tests: ', function() {
 
     function onInitialized(response) {
 
-      lmv.download(urn, './download').then(
+      lmv.download(urn, '.test/data/download').then(
         onDataDownloaded,
         onError
       );
@@ -234,5 +234,4 @@ describe('# View & Data Tests: ', function() {
     //start the test
     lmv.initialize().then(onInitialized, onError);
   });
-
 });
