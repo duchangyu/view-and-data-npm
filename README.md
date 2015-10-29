@@ -180,6 +180,17 @@ Here is an example that illustrates downloading a model packge from its URN:
 
 To load the model from downloaded package:
 
+* In your html:
+
+Unzip lmv-local/vXXXX in your client lib folder and  reference the css and viewer3d.js (or viewer3d.min.js for production).
+
+    <link rel="stylesheet" type="text/css" href="lib/lmv-local/v1.2.21/style.css?v=v1.2.21">
+    <script src="lib/lmv-local/v1.2.21/viewer3D.min.js?v=v1.2.21"></script>
+
+* In your javascript:
+
+Load an available viewable path obtained as output of the download.
+
     //<div id="viewer-local"></div> in your html
     var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
       document.getElementById('viewer-local'));
