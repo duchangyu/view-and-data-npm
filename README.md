@@ -209,7 +209,7 @@ Load an available viewable path obtained as output of the download.
 
 ## License
 
-[MIT License](http://opensource.org/licenses/MIT).
+[MIT License](http://opensource.org/licenses/MIT)
 
 
 ## Written by
@@ -217,4 +217,4 @@ Load an available viewable path obtained as output of the download.
 - [Cyrille Fauvel](http://around-the-corner.typepad.com/adn/cyrille-fauvel.html)
 - [Philippe Leefsma](http://adndevblog.typepad.com/cloud_and_mobile/philippe-leefsma.html)
 
-Autodesk Developer Network.
+Autodesk Developer Network, 2015
