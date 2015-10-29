@@ -3,8 +3,7 @@
 
 ## Description
 
-This is the official [NPM](https://www.npmjs.com) package for
-the [Autodesk View & Data API](https://developer.autodesk.com/api/view-and-data-api/).
+An [NPM](https://www.npmjs.com) package for [Autodesk View & Data API](https://developer.autodesk.com/api/view-and-data-api/).
 
 
 ## Setup
@@ -184,7 +183,7 @@ To load the model from downloaded package:
     //<div id="viewer-local"></div> in your html
     var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
       document.getElementById('viewer-local'));
-    
+
     var options = {
       docid: viewablePath[0].path,
       env: 'Local'
