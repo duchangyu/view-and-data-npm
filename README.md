@@ -182,7 +182,7 @@ To load the model from downloaded package:
 
 * In your html:
 
-Unzip lmv-local/vXXXX in your client lib folder and  reference the css and viewer3d.js (or viewer3d.min.js for production).
+Download the Autodesk viewer locally using http://extract.autodesk.io/ for example. Unzip the result in your client lib folder and  reference the css and viewer3d.js (or viewer3d.min.js for production).
 
     <link rel="stylesheet" type="text/css" href="lib/lmv-local/v1.2.21/style.css?v=v1.2.21">
     <script src="lib/lmv-local/v1.2.21/viewer3D.min.js?v=v1.2.21"></script>
@@ -210,6 +210,7 @@ Load an available viewable path obtained as output of the download.
 ## License
 
 This sample is licensed under the terms of the [MIT License](http://opensource.org/licenses/MIT). Please see the [LICENSE](LICENSE) file for full details.
+The Autodesk Viewer is not under MIT License but copyright by Autodesk, Inc.
 
 
 ## Written by
