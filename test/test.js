@@ -102,9 +102,7 @@ describe('# View & Data Tests: ', function() {
   //
   //
   ///////////////////////////////////////////////////////////////////
-
-  //default URN
-  var urn = 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YWRuLWJ1Y2tldC90ZXN0LmR3Zg==';
+  var urn = '';
 
   it('Full workflow (bucket/upload/registration/translation/thumbnail)', function(done) {
 
@@ -139,11 +137,30 @@ describe('# View & Data Tests: ', function() {
         path.join(__dirname, './data/test.dwf'),
         config.defaultBucketKey,
         'test.dwf').then(onUploadCompleted, onError);
+
+      //lmv.resumableUpload(
+      //  path.join(__dirname, './data/test.dwf'),
+      //  config.defaultBucketKey,
+      //  'test.dwf').then(onResumableUploadCompleted, onError);
     }
 
     function onUploadCompleted(response) {
 
       var fileId = response.objects[0].id;
+
+      urn = lmv.toBase64(fileId);
+
+      lmv.register(urn, true).then(onRegister, onError);
+    }
+
+    function onResumableUploadCompleted(response) {
+
+      response.forEach(function(result){
+
+        console.log(result.objects);
+      });
+
+      var fileId = response[0].objects[0].id;
 
       urn = lmv.toBase64(fileId);
 
@@ -204,7 +221,13 @@ describe('# View & Data Tests: ', function() {
 
     function onInitialized(response) {
 
-      lmv.download(urn, '.test/data/download').then(
+      if(!urn.length) {
+
+        done('Invalid translation, abort download...');
+        return;
+      }
+
+      lmv.download(urn, './test/data/download').then(
         onDataDownloaded,
         onError
       );

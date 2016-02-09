@@ -43,6 +43,7 @@ module.exports = {
     createBucket:     BASE_URL + '/oss/' + VERSION + '/buckets',
     upload:           BASE_URL + '/oss/' + VERSION + '/buckets/%s/objects/%s',
     resumableUpload:  BASE_URL + '/oss/' + VERSION + '/buckets/%s/objects/%s/resumable',
+    supported:        BASE_URL + '/viewingservice/' + VERSION + '/supported',
     register:         BASE_URL + '/viewingservice/' + VERSION + '/register',
     thumbnail:        BASE_URL + '/viewingservice/' + VERSION + '/thumbnails/%s',
     viewable:         BASE_URL + '/viewingservice/' + VERSION + '/%s',

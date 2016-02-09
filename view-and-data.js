@@ -155,6 +155,32 @@ module.exports = function(config) {
 
     return _refreshToken();
   }
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+  _self.getSupportedFormats = function() {
+
+    var promise = new Promise(function(resolve, reject) {
+
+      request.get({
+          url: config.endPoints.supported,
+          headers: {
+            'Authorization': 'Bearer ' + _token,
+            'Content-Type': 'application/json'
+          }
+        },
+        function (error, res, body) {
+
+          _handleResponse(error, res, body,
+            resolve,
+            reject);
+        });
+    });
+
+    return promise;
+  }
   
   ///////////////////////////////////////////////////////////////////
   // Use:
@@ -286,7 +312,7 @@ module.exports = function(config) {
           url: uploadUrl,
           headers: {
             'Authorization': 'Bearer ' + _token,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/octet-stream'
           }
         },
         function (error, res, body) {
@@ -365,7 +391,7 @@ module.exports = function(config) {
                   url: resumableUploadUrl,
                   headers: {
                     'Authorization': 'Bearer ' + _token,
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/octet-stream',
                     'Content-Range': contentRange,
                     'Session-Id': sessionId
                   }
