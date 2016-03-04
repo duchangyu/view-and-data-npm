@@ -20,17 +20,7 @@ var should = require('chai').should(),
   path = require('path');
 
 //only fill up credentials & bucket fields, other fields are defaulted
-var config = {
-
-  //!Change that name to a unique one,
-  // append ConsumerKey to it for example
-  defaultBucketKey: 'adn-bucket',
-
-  credentials: {
-    ConsumerKey: process.env.CONSUMERKEY, // use env variables or replace by consumer key
-    ConsumerSecret: process.env.CONSUMERSECRET // use env variables or replace by consumer secret
-  }
-}
+var config = require('../../../config-view-and-data');
 
 describe('# View & Data Tests: ', function() {
 
