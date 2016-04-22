@@ -40,6 +40,7 @@ see [that article](http://adndevblog.typepad.com/cloud_and_mobile/2015/01/bucket
 Then it will upload the test.dwf file, monitor it's translation status and get the thumbnail of model if
 the translation is successful.
 
+```javascript
       //Make sure config-view-and-data.js is copied at indicated location
       //in your server and that you filed up the API credentials as indicated above
 
@@ -136,12 +137,14 @@ the translation is successful.
 
       //start the test
       lmv.initialise().then(onInitialized, onError);
+```
 
 ## Offline
 
 The package now allows you to download the full viewable package on your disk to run the viewer completely offline.
 Here is an example that illustrates downloading a model packge from its URN:
 
+```javascript
     var lmv = new Lmv(config);
 
     function onError(error) {
@@ -179,6 +182,7 @@ Here is an example that illustrates downloading a model packge from its URN:
 
     //start the test
     lmv.initialize().then(onInitialized, onError);
+```
 
 To load the model from downloaded package:
 
