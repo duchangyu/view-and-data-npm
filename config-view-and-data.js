@@ -16,7 +16,7 @@
 // UNINTERRUPTED OR ERROR FREE.
 /////////////////////////////////////////////////////////////////////
 var BASE_URL = 'https://developer.api.autodesk.com';
-var VERSION = 'v1';
+var VERSION = 'v2';
 
 module.exports = {
 
@@ -31,22 +31,23 @@ module.exports = {
   // http://developer.autodesk.com
   credentials: {
 
-    ConsumerKey: process.env.CONSUMERKEY,
-    ConsumerSecret: process.env.CONSUMERSECRET
+    ConsumerKey: process.env.LMV_CONSUMERKEY,
+    ConsumerSecret: process.env.LMV_CONSUMERSECRET
   },
 
   // API EndPoints
   endPoints:{
 
-    authenticate:     BASE_URL + '/authentication/' + VERSION + '/authenticate',
+    authenticate:     BASE_URL + '/authentication/v1/authenticate',
     getBucket:        BASE_URL + '/oss/' + VERSION + '/buckets/%s/details',
     createBucket:     BASE_URL + '/oss/' + VERSION + '/buckets',
     upload:           BASE_URL + '/oss/' + VERSION + '/buckets/%s/objects/%s',
     resumableUpload:  BASE_URL + '/oss/' + VERSION + '/buckets/%s/objects/%s/resumable',
-    supported:        BASE_URL + '/viewingservice/' + VERSION + '/supported',
-    register:         BASE_URL + '/viewingservice/' + VERSION + '/register',
-    thumbnail:        BASE_URL + '/viewingservice/' + VERSION + '/thumbnails/%s',
-    viewable:         BASE_URL + '/viewingservice/' + VERSION + '/%s',
-    items:            BASE_URL + '/viewingservice/' + VERSION + '/items/%s'
+    supported:        BASE_URL + '/derivativeservice/' + VERSION + '/supported',
+    register:         BASE_URL + '/derivativeservice/' + VERSION + '/registration',
+    thumbnail:        BASE_URL + '/derivativeservice/' + VERSION + '/thumbnails/%s',
+    manifest:         BASE_URL + '/derivativeservice/' + VERSION + '/manifest/%s',
+    derivatives:      BASE_URL + '/derivativeservice/' + VERSION + '/derivatives/%s',
+    viewers:          BASE_URL + '/viewingservice/'    + VERSION + '/viewers'
   }
 }

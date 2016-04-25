@@ -19,17 +19,11 @@ var should = require('chai').should(),
   Lmv = require('../view-and-data'),
   path = require('path');
 
-//only fill up credentials & bucket fields, other fields are defaulted
 var config = {
-
-  //!Change that name to a unique one,
-  // append ConsumerKey to it for example
-  defaultBucketKey: 'adn-bucket',
-
-  credentials: {
-    ConsumerKey: process.env.CONSUMERKEY, // use env variables or replace by consumer key
-    ConsumerSecret: process.env.CONSUMERSECRET // use env variables or replace by consumer secret
-  }
+  useResumableUpload: false,
+  bucketKey: 'adn-bucket-test',
+  ConsumerKey: process.env.LMV_CONSUMERKEY,
+  ConsumerSecret: process.env.LMV_CONSUMERSECRET
 }
 
 describe('# View & Data Tests: ', function() {
@@ -43,7 +37,7 @@ describe('# View & Data Tests: ', function() {
     //set a 15'' timeout
     this.timeout(15 * 1000);
 
-    var lmv = new Lmv(config);
+    var lmv = new Lmv();
 
     lmv.getToken().then(function(response) {
 
@@ -67,7 +61,7 @@ describe('# View & Data Tests: ', function() {
 
     this.timeout(15 * 1000);
 
-    var lmv = new Lmv(config);
+    var lmv = new Lmv();
 
     function onError(error) {
       done(error);
@@ -78,12 +72,12 @@ describe('# View & Data Tests: ', function() {
       var createIfNotExists = true;
 
       var bucketCreationData = {
-        bucketKey: config.defaultBucketKey,
+        bucketKey: config.bucketKey,
         servicesAllowed: [],
-        policy: "transient"
+        policyKey: "transient"
       };
 
-      lmv.getBucket(config.defaultBucketKey,
+      lmv.getBucket(config.bucketKey,
         createIfNotExists,
         bucketCreationData).then(
         onBucketCreated,
@@ -108,9 +102,10 @@ describe('# View & Data Tests: ', function() {
 
     this.timeout(5 * 60 * 1000); //5 mins timeout
 
-    var lmv = new Lmv(config);
+    var lmv = new Lmv();
 
     function onError(error) {
+      
       done(error);
     }
 
@@ -119,12 +114,12 @@ describe('# View & Data Tests: ', function() {
       var createIfNotExists = true;
 
       var bucketCreationData = {
-        bucketKey: config.defaultBucketKey,
+        bucketKey: config.bucketKey,
         servicesAllowed: [],
-        policy: "transient"
+        policyKey: "transient"
       };
 
-      lmv.getBucket(config.defaultBucketKey,
+      lmv.getBucket(config.bucketKey,
         createIfNotExists,
         bucketCreationData).then(
           onBucketCreated,
@@ -133,20 +128,25 @@ describe('# View & Data Tests: ', function() {
 
     function onBucketCreated(response) {
 
-      lmv.upload(
-        path.join(__dirname, './data/test.dwf'),
-        config.defaultBucketKey,
-        'test.dwf').then(onUploadCompleted, onError);
+      if(config.useResumableUpload){
 
-      //lmv.resumableUpload(
-      //  path.join(__dirname, './data/test.dwf'),
-      //  config.defaultBucketKey,
-      //  'test.dwf').then(onResumableUploadCompleted, onError);
+        lmv.resumableUpload(
+          path.join(__dirname, './data/test.dwf'),
+          config.bucketKey,
+          'test.dwf').then(onResumableUploadCompleted, onError);
+      }
+      else {
+
+        lmv.upload(
+          path.join(__dirname, './data/test.dwf'),
+          config.bucketKey,
+          'test.dwf').then(onUploadCompleted, onError);
+      }
     }
 
     function onUploadCompleted(response) {
 
-      var fileId = response.objects[0].id;
+      var fileId = response.objectId;
 
       urn = lmv.toBase64(fileId);
 
@@ -213,7 +213,7 @@ describe('# View & Data Tests: ', function() {
 
     this.timeout(5 * 60 * 1000); //5 mins timeout
 
-    var lmv = new Lmv(config);
+    var lmv = new Lmv();
 
     function onError(error) {
       done(error);

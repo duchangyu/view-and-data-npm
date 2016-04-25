@@ -15,8 +15,8 @@ An [NPM](https://www.npmjs.com) package for [Autodesk View & Data API](https://d
 - Request your own API keys from our developer portal [developer.autodesk.com](http://developer.autodesk.com).
 - Replace the credentials placeholders with your own keys in `config-view-and-data.js` or use ENV variables:
 
-        ConsumerKey: process.env.CONSUMERKEY || '<replace with your consumer key>',
-        ConsumerSecret: process.env.CONSUMERSECRET || '<replace with your consumer secret>'
+        ConsumerKey: process.env.LMV_CONSUMERKEY || '<replace with your consumer key>',
+        ConsumerSecret: process.env.LMV_CONSUMERSECRET || '<replace with your consumer secret>'
 
 - Set up the default bucket name defined by the `defaultBucketKey` variable.
 - Copy the file `config-view-and-data.js` to your server config directory.
@@ -182,21 +182,22 @@ To load the model from downloaded package:
 
 * In your html:
 
-Download the Autodesk viewer locally using http://extract.autodesk.io/ for example. Unzip the result in your client lib folder and  reference the css and viewer3d.js (or viewer3d.min.js for production).
+Grab the zip in "lmv" directory and unzip its content in your client lib folder.
+Then reference style.css and viewer3d.js (or style.min.css/viewer3d.min.js for production).
 
-    <link rel="stylesheet" type="text/css" href="lib/lmv-local/v1.2.21/style.css?v=v1.2.21">
-    <script src="lib/lmv-local/v1.2.21/viewer3D.min.js?v=v1.2.21"></script>
+    <link rel="stylesheet" type="text/css" href="lib/lmv-local/version/style.css">
+    <script src="lib/lmv-local/version/viewer3D.js"></script>
 
 * In your javascript:
 
 Load an available viewable path obtained as output of the download.
 
-    //<div id="viewer-local"></div> in your html
+    //<div id="viewerContainer"></div> in your html
     var viewer = new Autodesk.Viewing.Private.GuiViewer3D(
-      document.getElementById('viewer-local'));
+      document.getElementById('viewerContainer'));
 
     var options = {
-      docid: viewablePath[0].path,
+      path: viewablePath[0].path,
       env: 'Local'
     };
 
@@ -204,7 +205,7 @@ Load an available viewable path obtained as output of the download.
 
       viewer.initialize();
 
-      viewer.load(options.docid);
+      viewer.load(options.path);
     });
 
 ## License
@@ -218,4 +219,4 @@ The Autodesk Viewer is not under MIT License but copyright by Autodesk, Inc.
 - [Cyrille Fauvel](http://around-the-corner.typepad.com/adn/cyrille-fauvel.html)
 - [Philippe Leefsma](http://adndevblog.typepad.com/cloud_and_mobile/philippe-leefsma.html)
 
-Autodesk Developer Network, 2015
+Autodesk Forge, 2016

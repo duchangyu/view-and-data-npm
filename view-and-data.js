@@ -168,7 +168,7 @@ module.exports = function(config) {
           url: config.endPoints.supported,
           headers: {
             'Authorization': 'Bearer ' + _token,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json; charset=utf-8'
           }
         },
         function (error, res, body) {
@@ -192,7 +192,7 @@ module.exports = function(config) {
   // Response:
   //
   // "{
-  //      "key":"bucketKey",
+  //      "bucketKey":"bucketKey",
   //      "owner":"tAp1fqjjtcgqS4CKpCYDjAyNbKW4IVCC",
   //      "createDate":1404984496468,
   //      "permissions":[{
@@ -200,33 +200,17 @@ module.exports = function(config) {
   //          "access":"full"}],
   //      "policyKey":"persistent"
   //  }"
-  ///////////////////////////////////////////////////////////////////
-  // Use:
+  //
   // Create bucket
   //
   // bucketCreationData = {
   //      bucketKey : "bucketKey",
   //      servicesAllowed: {},
-  //      policy: "temporary/transient/persistent"
+  //      policyKey: "temporary/transient/persistent
   // }
   //
   // API:
   // POST /oss/{apiversion}/buckets
-  //
-  // Response:
-  //
-  // {
-  // "bucketKey": "sampletestbucketdanieldu12345",
-  // "bucketOwner": "mvMpJWBGyBuGpVycB77FFgP45T4dBycD",
-  // "createdDate": 1435633089537,
-  // "permissions": [
-  // {
-  // "authId": "mvMpJWBGyBuGpVycB77FFgP45T4dBycD",
-  // "access": "full"
-  // }
-  // ],
-  // "policyKey": "temporary"
-  // }
   ///////////////////////////////////////////////////////////////////
   _self.getBucket = function(
     bucketKey,
@@ -243,7 +227,7 @@ module.exports = function(config) {
           url: getBucketUrl,
           headers: {
             'Authorization': 'Bearer ' + _token,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json; charset=utf-8'
           }
         },
         function (error, res, body) {
@@ -260,7 +244,7 @@ module.exports = function(config) {
                 url: config.endPoints.createBucket,
                 headers: {
                   'Authorization': 'Bearer ' + _token,
-                  'Content-Type': 'application/json'
+                  'Content-Type': 'application/json; charset=utf-8'
                 },
                 body: JSON.stringify(bucketCreationData)
               },
@@ -276,7 +260,7 @@ module.exports = function(config) {
 
     return promise;
   }
-  
+
   ///////////////////////////////////////////////////////////////////////////
   // Use:
   // Upload a file to bucket
@@ -286,16 +270,16 @@ module.exports = function(config) {
   //
   // Response:
   //
-  // "{   "bucket-key" : "adn-10.07.2014-11.28.15",
-  //      "file": file,
-  //      "objects" : [ {
-  //          "location" : "baseUrl/oss/v1/buckets/bucketKey/objects/file.name",
-  //          "size" : 1493911,
-  //          "key" : "file.name",
-  //          "id" : "urn:adsk.objects:os.object:bucketKey/file.name",
-  //          "sha-1" : "ba824b22a6df9d0fc30943ffcf8129e2b9de80f6",
-  //          "content-type" : "application/stream"  } ]
-  //  }"
+  //  v2
+  //  {
+  //    "bucketKey": "my-bucket",
+  //    "objectId": "urn:adsk.objects:os.object:my-bucket/filename.ext",
+  //    "objectKey": "filename.ext",
+  //    "sha1": "28f3e01b0050fbc8a619b68b229947f18ebe94ee",
+  //    "size": 945973,
+  //    "contentType": "application/json",
+  //    "location": "https://developer.api.autodesk.com/oss/v2/buckets/my-bucket/objects/filename.ext"
+  // }
   ///////////////////////////////////////////////////////////////////////////
   _self.upload = function(filename, bucketKey, objectKey) {
     
@@ -333,18 +317,6 @@ module.exports = function(config) {
   // API:
   // PUT /oss/{apiversion}/buckets/{bucketkey}/objects/{objectkey}/resumable
   //
-  // Response:
-  //
-  // "{   "bucket-key" : "adn-10.07.2014-11.28.15",
-  //      "file": file,
-  //      "objects" : [ {
-  //          "location" : "baseUrl/oss/v1/buckets/bucketKey/objects/file.name",
-  //          "size" : 1493911,
-  //          "key" : "file.name",
-  //          "id" : "urn:adsk.objects:os.object:bucketKey/file.name",
-  //          "sha-1" : "ba824b22a6df9d0fc30943ffcf8129e2b9de80f6",
-  //          "content-type" : "application/stream"  } ]
-  //  }"
   ///////////////////////////////////////////////////////////////////////////
   _self.resumableUpload = function(filename, bucketKey, objectKey) {
 
@@ -408,7 +380,11 @@ module.exports = function(config) {
           });
         };
 
-        var fctChunksArray = Array.apply(null, { length: nbChunks }).map(Number.call, Number);
+        var fctChunksArray = Array.apply(
+          null,
+          { length: nbChunks }).map(
+            Number.call,
+            Number);
 
         for ( var i =0 ; i < fctChunksArray.length ; i++)
           fctChunksArray[i] = fctChunks (i, chunkSize);
@@ -441,7 +417,7 @@ module.exports = function(config) {
   // Register an uploaded file
   //
   // API:
-  // POST /viewingservice/{apiversion}/register
+  // POST /derivativeservice/{apiversion}/registration
   //
   // Response:
   //
@@ -451,14 +427,54 @@ module.exports = function(config) {
 
     var promise = new Promise(function(resolve, reject) {
 
+      var registerUrl = util.format(
+        config.endPoints.register, '');
+
       request.post({
-          url: config.endPoints.register,
+          url: registerUrl,
           headers: {
             'Authorization': 'Bearer ' + _token,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
             'x-ads-force': force
           },
-          body: JSON.stringify({urn: urn})
+          body: JSON.stringify({design: urn})
+        },
+        function (error, res, body) {
+
+          _handleResponse(error, res, body,
+            resolve,
+            reject);
+        });
+    });
+
+    return promise;
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // Use:
+  // Unregister a design file will automatically delete the manifest
+  // storage (lasting case) and corresponding derivatives.
+  //
+  // API:
+  // DELETE /derivativeservice/{apiversion}/registration
+  //
+  // Response:
+  //
+  // "{"Result":"Success"}"
+  ///////////////////////////////////////////////////////////////////
+  _self.unregister = function(urn) {
+
+    var promise = new Promise(function(resolve, reject) {
+
+      var registerUrl = util.format(
+        config.endPoints.register, '/' + urn);
+
+      request.delete({
+          url: registerUrl,
+          headers: {
+            'Authorization': 'Bearer ' + _token,
+            'Content-Type': 'application/json; charset=utf-8'
+          }
         },
         function (error, res, body) {
 
@@ -476,10 +492,9 @@ module.exports = function(config) {
   // Get model thumbnail
   //
   // API:
-  // GET /viewingservice/{apiversion}/thumbnails/{urn}?
-  //     guid=$GUID$ & width=$WIDTH$ & height=$HEIGHT$ (& type=$TYPE$)
-  //
-  // Response:
+  // GET /derivativeservice/{apiversion}/thumbnails/{urn}?guid=$GUID$
+  // & width=$WIDTH$ & height=$HEIGHT$
+  // (& type=$TYPE$ & role=$ROLE$ & fileType=$FILETYPE$ & mimeType=$MIMETYPE$)
   //
   ///////////////////////////////////////////////////////////////////
   _self.getThumbnail = function (urn, width, height, guid) {
@@ -525,12 +540,12 @@ module.exports = function(config) {
 
   ///////////////////////////////////////////////////////////////////
   // Use:
-  // Get model viewable
+  // Get model manifest
   //
   // API:
-  // GET /viewingservice/{apiversion}/{urn}?guid=$GUID$
-  // GET /viewingservice/{apiversion}/{urn}/status?guid=$GUID$
-  // GET /viewingservice/{apiversion}/{urn}/all?guid=$GUID$
+  // GET /derivativeservice/{apiversion}/manifest/{urn}?guid=$GUID$
+  // GET /derivativeservice/{apiversion}/manifest/{urn}/status?guid=$GUID$
+  // GET /derivativeservice/{apiversion}/manifest/{urn}/all?guid=$GUID$
   //
   // Response:
   //
@@ -566,7 +581,7 @@ module.exports = function(config) {
     var promise = new Promise(function(resolve, reject) {
 
       var viewableUrl = util.format(
-        config.endPoints.viewable, urn);
+        config.endPoints.manifest, urn);
 
       var parameters = (guid ? '?guid=' + guid : '');
 
@@ -589,7 +604,7 @@ module.exports = function(config) {
           url: viewableUrl + optionStr + parameters,
           headers: {
             'Authorization': 'Bearer ' + _token,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json; charset=utf-8'
           }
         },
         function (error, res, body) {
@@ -653,45 +668,46 @@ module.exports = function(config) {
   ///////////////////////////////////////////////////////////////////
   //
   // API:
-  // GET /viewingservice/v1/items/:encodedURN
+  // GET /derivativeservice/{apiversion}/derivatives/{urn}/
   //
   ///////////////////////////////////////////////////////////////////
-  _self.getItem = function(urn) {
+  _self.getDerivative = function(urn) {
 
     var promise = new Promise(function(resolve, reject) {
 
-      var itemUrl = util.format(
-        config.endPoints.items, urn);
+        var itemUrl = util.format(
+          config.endPoints.derivatives,
+          encodeURIComponent(urn));
 
-      request.get({
-          url: itemUrl,
-          headers: {
-            'Authorization': 'Bearer ' + _token
+        request.get({
+            url: itemUrl,
+            headers: {
+              'Authorization': 'Bearer ' + _token
+            },
+            encoding: null
           },
-          encoding: null
-        },
-        function (error, res, body) {
+          function (error, res, body) {
 
-          try {
+            try {
 
-            if (error || res.statusCode != 200) {
+              if (error || res.statusCode != 200) {
 
-              error = error || {error: res.statusMessage || 'undefined'};
+                error = error || {error: res.statusMessage || 'undefined'};
 
-              error.statusCode = res.statusCode;
+                error.statusCode = res.statusCode;
 
-              reject(error);
+                reject(error);
+              }
+              else {
+
+                resolve(body);
+              }
             }
-            else {
+            catch(ex) {
 
-              resolve(body);
+              reject({error: ex});
             }
-          }
-          catch(ex) {
-
-            reject({error: ex});
-          }
-        });
+          });
     });
 
     return promise;
@@ -816,7 +832,7 @@ module.exports = function(config) {
               },
               function(items, callback) {
 
-                downloadItems(items, directory, 10, callback);
+                downloadDerivatives(items, directory, 10, callback);
               },
               function (items, callback) {
 
@@ -824,7 +840,7 @@ module.exports = function(config) {
               },
               function (uris, callback) {
 
-                downloadItems(uris, directory, 10, callback);
+                downloadDerivatives(uris, directory, 10, callback);
               }
             ],
             function (wfError, items) {
@@ -872,10 +888,12 @@ module.exports = function(config) {
               });
           }
 
-          var items = getUrnRec(viewable);
+          var items = getUrnsRec(viewable);
 
-          //removes first urn (model)
-          items.shift();
+          // filters out root urn
+          items = items.filter(function(item){
+            return item !== urn;
+          });
 
           var views = getViewsRec(viewable, viewable, directory);
 
@@ -905,10 +923,10 @@ module.exports = function(config) {
   }
 
   ////////////////////////////////////////////////////////////////////////
-  // Download all items to target directory
+  // Download all derivatives to target directory
   //
   ////////////////////////////////////////////////////////////////////////
-  function downloadItems(items, directory, maxWorkers, callback) {
+  function downloadDerivatives(items, directory, maxWorkers, callback) {
 
     //Download each item asynchronously
     async.mapLimit (items, maxWorkers,
@@ -920,7 +938,7 @@ module.exports = function(config) {
         }
         else {
 
-          downloadItem(item, directory, mapCallback);
+          downloadDerivative(item, directory, mapCallback);
         }
       },
       //All tasks are done
@@ -943,21 +961,21 @@ module.exports = function(config) {
   // Grab all urn's from viewable recursively
   //
   ////////////////////////////////////////////////////////////////////////
-  function getUrnRec(item) {
+  function getUrnsRec(item) {
 
-    var urn =[];
+    var urns = [];
 
-    if (item.urn !== undefined )
-      urn.push(item.urn);
+    if (item.urn !== undefined)
+      urns.push(item.urn);
 
     if(item.children !== undefined) {
 
       for(var key in item.children)
-        urn = urn.concat(getUrnRec(
+        urns = urns.concat(getUrnsRec(
           item.children[key]));
     }
 
-    return urn;
+    return urns;
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -997,12 +1015,12 @@ module.exports = function(config) {
   }
 
   ////////////////////////////////////////////////////////////////////////
-  // Download item to target directory
+  // Download derivative to target directory
   //
   ////////////////////////////////////////////////////////////////////////
-  function downloadItem(item, directory, callback) {
+  function downloadDerivative(item, directory, callback) {
 
-    _self.getItem(item).then(
+    _self.getDerivative(item).then(
 
       function(data) {
 
@@ -1219,7 +1237,7 @@ module.exports = function(config) {
 
       uris = uris.filter(function(uri) {
 
-        return uri.startsWith('urn:');
+        return uri.indexOf('urn:') == 0;
       });
 
       callback(null, uris);
@@ -1251,7 +1269,7 @@ module.exports = function(config) {
 
         uris = uris.filter(function(uri) {
 
-          return uri.startsWith('urn:');
+          return uri.indexOf('urn:') == 0;
         });
 
         callback(null, uris);
