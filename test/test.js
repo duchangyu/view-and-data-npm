@@ -19,12 +19,13 @@ var should = require('chai').should(),
   Lmv = require('../view-and-data'),
   path = require('path');
 
-var config = {
+var testConfig = {
   useResumableUpload: false,
-  bucketKey: 'adn-bucket-test',
-  ConsumerKey: process.env.LMV_CONSUMERKEY,
-  ConsumerSecret: process.env.LMV_CONSUMERSECRET
+  bucketKey: 'adn-bucket-npm'
 }
+
+//only fill up credentials & bucket fields, other fields are defaulted
+var config = require('../config-view-and-data');
 
 describe('# View & Data Tests: ', function() {
 
@@ -37,7 +38,7 @@ describe('# View & Data Tests: ', function() {
     //set a 15'' timeout
     this.timeout(15 * 1000);
 
-    var lmv = new Lmv();
+    var lmv = new Lmv(config);
 
     lmv.getToken().then(function(response) {
 
@@ -72,12 +73,12 @@ describe('# View & Data Tests: ', function() {
       var createIfNotExists = true;
 
       var bucketCreationData = {
-        bucketKey: config.bucketKey,
+        bucketKey: testConfig.bucketKey,
         servicesAllowed: [],
         policyKey: "transient"
       };
 
-      lmv.getBucket(config.bucketKey,
+      lmv.getBucket(testConfig.bucketKey,
         createIfNotExists,
         bucketCreationData).then(
         onBucketCreated,
@@ -85,6 +86,37 @@ describe('# View & Data Tests: ', function() {
     }
 
     function onBucketCreated(response) {
+
+      done();
+    }
+
+    lmv.initialize().then(onInitialized, onError);
+  });
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+  it('List buckets', function(done) {
+
+    this.timeout(15 * 1000);
+
+    var lmv = new Lmv();
+
+    function onError(error) {
+      done(error);
+    }
+
+    function onInitialized(response) {
+
+      lmv.listBuckets().then(
+        onBucketList,
+        onError);
+    }
+
+    function onBucketList(response) {
+
+      console.log(response);
 
       done();
     }
@@ -105,7 +137,7 @@ describe('# View & Data Tests: ', function() {
     var lmv = new Lmv();
 
     function onError(error) {
-      
+
       done(error);
     }
 
@@ -114,12 +146,12 @@ describe('# View & Data Tests: ', function() {
       var createIfNotExists = true;
 
       var bucketCreationData = {
-        bucketKey: config.bucketKey,
+        bucketKey: testConfig.bucketKey,
         servicesAllowed: [],
         policyKey: "transient"
       };
 
-      lmv.getBucket(config.bucketKey,
+      lmv.getBucket(testConfig.bucketKey,
         createIfNotExists,
         bucketCreationData).then(
           onBucketCreated,
@@ -128,18 +160,18 @@ describe('# View & Data Tests: ', function() {
 
     function onBucketCreated(response) {
 
-      if(config.useResumableUpload){
+      if(testConfig.useResumableUpload){
 
         lmv.resumableUpload(
           path.join(__dirname, './data/test.dwf'),
-          config.bucketKey,
+          testConfig.bucketKey,
           'test.dwf').then(onResumableUploadCompleted, onError);
       }
       else {
 
         lmv.upload(
           path.join(__dirname, './data/test.dwf'),
-          config.bucketKey,
+          testConfig.bucketKey,
           'test.dwf').then(onUploadCompleted, onError);
       }
     }
@@ -180,6 +212,9 @@ describe('# View & Data Tests: ', function() {
             onError);
       }
       else {
+
+        console.log('reg error')
+
         done(response);
       }
     }
@@ -257,4 +292,35 @@ describe('# View & Data Tests: ', function() {
     //start the test
     lmv.initialize().then(onInitialized, onError);
   });
+
+  ///////////////////////////////////////////////////////////////////
+  // 
+  //
+  ///////////////////////////////////////////////////////////////////
+  //it('Unregister model', function(done) {
+  //
+  //  this.timeout(15 * 1000);
+  //
+  //  var lmv = new Lmv();
+  //
+  //  function onError(error) {
+  //    done(error);
+  //  }
+  //
+  //  function onInitialized(response) {
+  //
+  //    lmv.unregister(urn).then(
+  //      onUnregistered,
+  //      onError);
+  //  }
+  //
+  //  function onUnregistered(response) {
+  //
+  //    console.log(response);
+  //
+  //    done();
+  //  }
+  //
+  //  lmv.initialize().then(onInitialized, onError);
+  //});
 });

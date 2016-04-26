@@ -232,13 +232,7 @@ module.exports = function(config) {
         },
         function (error, res, body) {
 
-          if(res.statusCode == 200 || !createIfNotExists) {
-
-            _handleResponse(error, res, body,
-              resolve,
-              reject);
-          }
-          else {
+          if(res.statusCode == 404 && createIfNotExists) {
 
             request.post({
                 url: config.endPoints.createBucket,
@@ -255,6 +249,72 @@ module.exports = function(config) {
                   reject);
               });
           }
+          else {
+
+            _handleResponse(error, res, body,
+              resolve,
+              reject);
+          }
+        });
+    });
+
+    return promise;
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  // Use:
+  // List buckets
+  //
+  // API:
+  // GET /oss/v2/buckets[?region={region}&limit={limit}&startAt={startAt}]
+  //
+  // Response:
+  //
+  // "{
+  //      "bucketKey":"bucketKey",
+  //      "owner":"tAp1fqjjtcgqS4CKpCYDjAyNbKW4IVCC",
+  //      "createDate":1404984496468,
+  //      "permissions":[{
+  //          "serviceId":"tAp1fqjjtcgqS4CKpCYDjAyNbKW4IVCC",
+  //          "access":"full"}],
+  //      "policyKey":"persistent"
+  //  }"
+  //
+  // Create bucket
+  //
+  // bucketCreationData = {
+  //      bucketKey : "bucketKey",
+  //      servicesAllowed: {},
+  //      policyKey: "temporary/transient/persistent
+  // }
+  //
+  // API:
+  // POST /oss/{apiversion}/buckets
+  ///////////////////////////////////////////////////////////////////
+  _self.listBuckets = function(queryOpts) {
+
+    var promise = new Promise(function(resolve, reject) {
+
+      var query = queryOpts || 'limit=100';
+
+      var listBucketsUrl = util.format(
+        config.endPoints.listBuckets,
+        query);
+
+      console.log(listBucketsUrl)
+
+      request.get({
+          url: listBucketsUrl,
+          headers: {
+            'Authorization': 'Bearer ' + _token,
+            'Content-Type': 'application/json; charset=utf-8'
+          }
+        },
+        function (error, res, body) {
+
+          _handleResponse(error, res, body,
+            resolve,
+            reject);
         });
     });
 
@@ -466,11 +526,12 @@ module.exports = function(config) {
 
     var promise = new Promise(function(resolve, reject) {
 
-      var registerUrl = util.format(
-        config.endPoints.register, '/' + urn);
+      var unregisterUrl = util.format(
+        config.endPoints.unregister, urn);
 
-      request.delete({
-          url: registerUrl,
+      request({
+          url: unregisterUrl,
+          method: 'DELETE',
           headers: {
             'Authorization': 'Bearer ' + _token,
             'Content-Type': 'application/json; charset=utf-8'
