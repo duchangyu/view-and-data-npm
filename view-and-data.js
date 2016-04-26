@@ -533,8 +533,7 @@ module.exports = function(config) {
           url: unregisterUrl,
           method: 'DELETE',
           headers: {
-            'Authorization': 'Bearer ' + _token,
-            'Content-Type': 'application/json; charset=utf-8'
+            'Authorization': 'Bearer ' + _token
           }
         },
         function (error, res, body) {

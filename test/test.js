@@ -297,30 +297,30 @@ describe('# View & Data Tests: ', function() {
   //
   //
   ///////////////////////////////////////////////////////////////////
-  //it('Unregister model', function(done) {
-  //
-  //  this.timeout(15 * 1000);
-  //
-  //  var lmv = new Lmv();
-  //
-  //  function onError(error) {
-  //    done(error);
-  //  }
-  //
-  //  function onInitialized(response) {
-  //
-  //    lmv.unregister(urn).then(
-  //      onUnregistered,
-  //      onError);
-  //  }
-  //
-  //  function onUnregistered(response) {
-  //
-  //    console.log(response);
-  //
-  //    done();
-  //  }
-  //
-  //  lmv.initialize().then(onInitialized, onError);
-  //});
+  it('Unregister model', function(done) {
+
+    this.timeout(15 * 1000);
+
+    var lmv = new Lmv();
+
+    function onError(error) {
+      done(error);
+    }
+
+    function onInitialized(response) {
+
+      lmv.unregister(urn).then(
+        onUnregistered,
+        onError);
+    }
+
+    function onUnregistered(response) {
+
+      console.log(response);
+
+      done();
+    }
+
+    lmv.initialize().then(onInitialized, onError);
+  });
 });
