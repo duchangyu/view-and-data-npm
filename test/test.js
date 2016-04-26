@@ -21,7 +21,7 @@ var should = require('chai').should(),
 
 var testConfig = {
   useResumableUpload: false,
-  bucketKey: 'adn-bucket-npm'
+  bucketKey: 'adn-bucket-npm' //change that bucket name to your own
 }
 
 //only fill up credentials & bucket fields, other fields are defaulted
@@ -294,7 +294,7 @@ describe('# View & Data Tests: ', function() {
   });
 
   ///////////////////////////////////////////////////////////////////
-  // 
+  //
   //
   ///////////////////////////////////////////////////////////////////
   //it('Unregister model', function(done) {
